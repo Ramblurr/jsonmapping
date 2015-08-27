@@ -8,7 +8,7 @@ def extract_value(mapping, bind, data):
     """ Given a mapping and JSON schema spec, extract a value from ``data``
     and apply certain transformations to normalize the value. """
     columns = mapping.get('columns', [mapping.get('column')])
-    values = [data.get(c) for c in columns]
+    values = [data.get(c.strip()) for c in columns]
 
     for transform in mapping.get('transforms', []):
         # any added transforms must also be added to the schema.
