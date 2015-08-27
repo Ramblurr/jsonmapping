@@ -143,14 +143,14 @@ class Mapper(RefScoped):
         ``data`` (the generated object graph) and ``err``, a validation
         exception if the resulting data did not match the expected schema. """
         mapper = cls.from_mapping(mapping, resolver, scope=scope)
-        for row in rows:
+        for i,row in enumerate(rows):
             err = None
             _, data = mapper.apply(row)
             try:
                 mapper.validator.validate(data)
-            except ValidationError, ve:
+            except ValidationError as ve:
                 err = ve
-            yield data, err
+            yield data, err, i, row
 
     @classmethod
     def flatten_iter(cls, objs, mapping, resolver, scope=None):
