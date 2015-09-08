@@ -14,13 +14,18 @@ def extract_value(mapping, bind, data):
         # any added transforms must also be added to the schema.
         values = list(TRANSFORMS[transform](mapping, bind, values))
 
-    value = values[0] if len(values) else None
-    empty = value is None or \
-        (isinstance(value, six.string_types) and not len(value.strip()))
+    if bind.parent.is_array and len(values):
+        for i, v in enumerate(values):
+            values[i] = convert_value(bind, v)
+        return False, values
+    else:
+        value = values[0] if len(values) else None
+        empty = value is None or \
+            (isinstance(value, six.string_types) and not len(value.strip()))
 
-    if empty:
-        value = mapping.get('default') or bind.schema.get('default')
-    return empty, convert_value(bind, value)
+        if empty:
+            value = mapping.get('default') or bind.schema.get('default')
+        return empty, convert_value(bind, value)
 
 
 def get_type(bind):

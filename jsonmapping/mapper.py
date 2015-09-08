@@ -102,7 +102,7 @@ class Mapper(RefScoped):
                               schema=item.schema, bind=item,
                               parent=self, name=self.name)
                 empty, value = bind.apply(data)
-                return empty, [value]
+                return empty, [value] if not isinstance(value, list) else value
 
         elif self.bind.is_value:
             return extract_value(self.mapping, self.bind, data)
