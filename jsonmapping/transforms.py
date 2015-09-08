@@ -50,3 +50,13 @@ TRANSFORMS = {
     'strip': str_func('strip'),
     'hash': hash
 }
+
+
+def add(name, func):
+    """
+    Add a user supplied transform and make it avaialble for mapping
+    :param name:  the name of the function, used in the json mapping
+    :param func:  the function pointer accepting params (mapping, bind, values)
+    :return:
+    """
+    TRANSFORMS.update({name : func})
